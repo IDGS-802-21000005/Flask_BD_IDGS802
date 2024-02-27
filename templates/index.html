@@ -1,6 +1,27 @@
-{% extends "layout.html" %}
-
-
-{%block content %} 
-<h1>saludos desde el index !!</h1>
+{% extends "layout.html" %} 
+    {%from "_macros.html" import render_field%}
+{%block content %}
+<div class="container">
+    <div class="row">
+        <form action="/index" name="registro" id="registro" method="POST" nonvalidate>
+            <div class="row control-group">
+                <div class="form-group col-xs-12 float-label-form-group controls">
+                    {{render_field(form.nombre, class="form-control")}}
+                </div>
+            </div>
+            <div class="row control-group">
+                <div class="form-group col-xs-12 float-label-form-group controls">
+                    {{render_field(form.apaterno, class="form-control")}}
+                </div>
+            </div>
+            <div class="row control-group">
+                <div class="form-group col-xs-12 float-label-form-group controls">
+                    {{render_field(form.email, class="form-control")}}
+                </div>
+            </div>
+            <input type="hidden" name="csrf_token" value="{{csrf_token()}}"/>
+            <input type="submit" class="btn btn-primary" value="Registrar" id="registrar"/>
+        </form>
+    </div>
+</div>
 {%endblock%}

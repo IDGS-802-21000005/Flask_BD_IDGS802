@@ -5,16 +5,31 @@ from flask import g
 from flask import flash
 from config import DevelopmentConfig
 from models import db
+from models import Alumnos
 import forms
 app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
 csrf=CSRFProtect()
 
-@app.route("/")
+@app.route("/index", methods=["GET","POST"])
 def index():
-    return render_template("index.html")
+    alumnos_form=forms.UserForm3(request.form)
+    
+    if request.method == "POST" and alumnos_form.validate():
+        alum=Alumnos(nombre=alumnos_form.nombre.data,
+                    apaterno=alumnos_form.apaterno.data,
+                    email=alumnos_form.email.data)
+        #insert into alumnos values()
+        db.session.add(alum)
+        db.session.commit()
+        
+    return render_template("index.html", form=alumnos_form)
 
-
+@app.route("/ABC_Completo", methods=["GET","POST"])
+def ABC_Completo():
+    alumnos_form=forms.UserForm3(request.form)
+    alumnos=Alumnos.query.all()
+    return render_template("ABC_Completo.html", alumnos=alumnos) 
 
 @app.route("/alumnos",methods=["GET","POST"])
 def alumnos():
